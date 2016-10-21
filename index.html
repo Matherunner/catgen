@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Half-Life Category Generator</title>
+
+	<link href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<style type="text/css">
+		html {
+			width: 100%;
+			height: 100%;
+		}
+
+		body {
+			width: 100%;
+			height: 100%;
+			padding: 0px;
+			margin: 0px;
+			background-color: #222;
+			color: rgb(219, 109, 3);
+			font-family: "PT Sans", sans-serif;
+		}
+
+		.symbol {
+			font-size: 100pt;
+		}
+
+		.head {
+			color: #eee;
+		}
+
+		.btn {
+			background-color: #eee;
+			color: #222;
+		}
+
+		.btn-main {
+			margin-top: 1em;
+			margin-bottom: 2em;
+			font-weight: bold;
+		}
+
+		.site-container {
+			display: table;
+			text-align: center;
+			margin: auto;
+			max-width: 1000px;
+			height: 100%;
+		}
+
+		.site-container-inner {
+			display: table-cell;
+			margin: auto;
+			padding-top: 40px;
+			padding-bottom: 40px;
+		}
+
+		#output-text {
+			min-height: 4em;
+			font-size: 150%;
+		}
+	</style>
+</head>
+<body>
+<div class="site-container">
+	<div class="site-container-inner">
+		<h1 class="symbol">λ</h1>
+		<h1 class="head">The main category is <em>unfair</em>, <em>dumb</em>, and <em>elitist</em></h1>
+		<h1 class="head">And I <em>can’t beat</em> its world record!</h1>
+		<button class="btn btn-lg btn-main" id="btn-generate">What category to run instead?</button>
+		<p id="output-text"></p>
+	</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+	function Token(string, url) {
+		this.string = string;
+		this.url = url;
+	}
+
+	var TOKENS = {
+		movements: {
+			ducks: ['No Ducktap', 'No Duckroll'],
+			jumps: ['No Jump', 'No Bhop', 'ABH', 'No Bhopcap'],
+		},
+		settings: {
+			airaccelerate: ['100aa', '50aa'],
+			maxspeed: ['300maxspeed', '270maxspeed'],
+			fps: ['20fps', '83.33fps', '100fps', 'Locked FPS'],
+			gravity: ['No Gravity'],
+			friction: ['No Friction'],
+			running: ['Walk Only'],
+		},
+		glitches: {
+			ihd: ['No IHD'],
+			triggerdelay: ['No Triggerdelay'],
+			oboo: ['No Obbo'],
+			damage: ['No Damage', 'No Damage Boost'],
+			gauss: ['No Gauss'],
+			saveload: ['No Saveload', 'No Savewarp'],
+			wrongwarp: ['No Wrongwarp'],
+			wait: ['No "wait"'],
+			impulse101: ['Impulse 101'],
+			rngmanipulation: ['RNG Manipulation'],
+		},
+		skips: {
+			testchamber: ['No Testchamber Skip'],
+			scientist: ['No Scientist Skip'],
+			powerup: ['No Powerup Skip'],
+			barney: ['No Barney Skip'],
+			blastpit: ['No Blast Pit Skip'],
+		},
+		completions: {
+			completion: ['100%', 'Any%', 'Low%'],
+		},
+		mousewheels: {
+			mousewheel: ['Mousewheel', 'No Mousewheel', 'Freescrolling Wheel', 'Non-Freescrolling Wheel'],
+		},
+		inputs: {
+			input: ['No Keyboard', 'No Mouse'],
+		},
+		bounds: {
+			bound: ['OoB', 'Noclip'],
+		},
+		weapons: {
+			crowbar: ['Crowbar Only'],
+			pistol: ['Pistol Only'],
+			shotgun: ['Shotgun Only'],
+			handgun: ['Handgun Only'],
+		},
+		healths: {
+			health: ['No Suit', 'God Mode', '50 HP'],
+		},
+		directions: {
+			direction: ['Reverse Run'],
+		}
+	};
+
+	var SCRIPTS = ['Scriptless', 'Non-Scriptless', 'Scripted'];
+	var EXECUTIONS = ['RTA', 'SS', 'Segmented', 'TAS', 'Human-TAS', 'RTA TAS', 'SS TAS', 'Blind Run'];
+	var VERSIONS = ['WON', 'Steam', 'NGHL'];
+	var DIFFICULTIES = ['Easy', 'Hard', 'Medium', 'Multiskill'];
+
+	function normal_distribution(mu, sigma) {
+		var u1, u2;
+		do {
+			u1 = Math.random();
+		} while (u1 === 0.0);
+		do {
+			u2 = Math.random();
+		} while (u2 === 0.0);
+		var z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+		return z * sigma + mu;
+	}
+
+	function generate_tokens_length(size, k) {
+		var length = Math.ceil(normal_distribution(size / k, size / 10));
+		if (length < 0) {
+			return 0;
+		} else if (length > size) {
+			return size;
+		} else {
+			return length;
+		}
+	}
+
+	function choose_from(n, array) {
+		var chosen = [];
+		var arr = array.slice();
+		while (n-- > 0) {
+			var i = Math.floor(Math.random() * arr.length);
+			chosen.push(arr[i]);
+			arr.splice(i, 1);
+		}
+		return chosen;
+	}
+
+	function generate_string() {
+		var keys = Object.keys(TOKENS);
+		var token_length = generate_tokens_length(keys.length, 4);
+		var drawn_keys = choose_from(token_length, keys);
+		var final_pieces = ['Half-Life'];
+		for (var i in drawn_keys) {
+			var key = drawn_keys[i];
+			var subkeys = Object.keys(TOKENS[key]);
+			var sub_type_length = generate_tokens_length(subkeys.length, subkeys.length);
+			var drawn_sub_keys = choose_from(sub_type_length, subkeys);
+			for (var j in drawn_sub_keys) {
+				var subkey = drawn_sub_keys[j];
+				final_pieces.push(choose_from(1, TOKENS[key][subkey])[0]);
+			}
+		}
+		final_pieces.push(choose_from(1, SCRIPTS));
+		final_pieces.push(choose_from(1, EXECUTIONS));
+		final_pieces.push('on');
+		final_pieces.push(choose_from(1, VERSIONS));
+		final_pieces.push(choose_from(1, DIFFICULTIES));
+		return final_pieces.join(' ');
+	}
+
+	$('#btn-generate').click(function() {
+		var s = generate_string();
+		$('#output-text').text(s);
+	});
+</script>
+</body>
+</html>
