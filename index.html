@@ -34,6 +34,7 @@
 
 		.head {
 			color: #eee;
+			line-height: 1.3;
 		}
 
 		.btn {
@@ -73,8 +74,10 @@
 	<div class="site-container-inner">
 		<h1 class="title">The Proliferation of Categories</h1>
 		<h1 class="symbol">λ</h1>
-		<h1 class="head">The main category is <em>unfair</em>, <em>dumb</em>, and <em>elitist</em></h1>
-		<h1 class="head">And I <em>can’t beat</em> its world record!</h1>
+		<h1 class="head">
+			The main category is <em>unfair</em>, <em>dumb</em>, and <em>elitist</em><br>
+			And I <em>can’t beat</em> its world record!
+		</h1>
 		<button class="btn btn-lg btn-main" id="btn-generate">What category to run instead?</button>
 		<p id="output-text"></p>
 	</div>
@@ -82,138 +85,101 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript">
-	function Token(string, url) {
-		this.string = string;
-		this.url = url;
+	"use strict";
+
+	var SCRIPTS = ['Scriptless', 'Scripted', 'Non-Scriptless'];
+	var FORMATS = ['TAS', 'RTA', 'SS', 'Segmented'];
+	var VERSIONS = ['WON', 'SteamPipe', 'Pre-SteamPipe', 'NGHL', 'NGHL with hlspbunny'];
+	var DIFFICULTIES = ['Hard Difficulty', 'Medium Difficulty', 'Easy Difficulty', 'Multiple Difficulties'];
+	var ruleTree;
+
+	function shuffle(arr) {
+		for (var i = arr.length - 1; i >= 1; --i) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var tmp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = tmp;
+		}
 	}
 
-	var TOKENS = {
-		movements: {
-			ducks: ['No Ducktap', 'No Duckroll'],
-			jumps: ['No Jump', 'No Bhop', 'ABH', 'No Bhopcap'],
-		},
-		settings: {
-			airaccelerate: ['100aa', '50aa'],
-			maxspeed: ['300maxspeed', '270maxspeed'],
-			fps: ['20fps', '83.33fps', '100fps', 'Locked FPS'],
-			gravity: ['No Gravity'],
-			friction: ['No Friction'],
-			running: ['Walk Only'],
-			fov: ['50 FOV', '75 FOV', '90 FOV', '180 FOV'],
-		},
-		glitches: {
-			ihd: ['No IHD'],
-			triggerdelay: ['No Triggerdelay'],
-			oboo: ['No Obbo'],
-			damage: ['No Damage', 'No Damage Boost'],
-			gauss: ['No Gauss'],
-			saveload: ['No Saveload', 'No Savewarp'],
-			wrongwarp: ['No Wrongwarp'],
-			wait: ['No "wait"'],
-			impulse101: ['Impulse 101'],
-			rngmanipulation: ['RNG Manipulation'],
-		},
-		skips: {
-			testchamber: ['No Testchamber Skip'],
-			scientist: ['No Scientist Skip'],
-			powerup: ['No Powerup Skip'],
-			barney: ['No Barney Skip'],
-			blastpit: ['No Blast Pit Skip'],
-		},
-		completions: {
-			completion: ['100%', 'Any%', 'Low%'],
-		},
-		inputs: {
-			mouse: ['No Mouse', 'With Mousewheel', 'No Mousewheel', 'With Freescrolling Wheel', 'Non-Freescrolling Wheel', 'With Laptop’s Touchpad'],
-			keyboard: ['No Keyboard'],
-			vnc: ['Remote Desktop'],
-			sound: ['No Sound'],
-		},
-		bounds: {
-			bound: ['OoB', 'Noclip'],
-		},
-		weapons: {
-			crowbar: ['Crowbar Only'],
-			pistol: ['Pistol Only'],
-			shotgun: ['Shotgun Only'],
-			handgun: ['Handgun Only'],
-		},
-		healths: {
-			health: ['No Suit', 'God Mode', '50 HP'],
-		},
-		directions: {
-			direction: ['Reverse Run'],
-		},
-		huds: {
-			hud: ['No HUD', 'No Crosshair', 'No Screen'],
-		},
-	};
-
-	var SCRIPTS = ['Scriptless', 'Non-Scriptless', 'Scripted'];
-	var EXECUTIONS = ['RTA', 'SS', 'Segmented', 'TAS', 'Human-TAS', 'RTA TAS', 'SS TAS', 'Blind Run'];
-	var VERSIONS = ['WON', 'Steam', 'NGHL'];
-	var DIFFICULTIES = ['Easy', 'Hard', 'Medium', 'Multiskill'];
-
-	function normal_distribution(mu, sigma) {
-		var u1, u2;
-		do {
-			u1 = Math.random();
-		} while (u1 === 0.0);
-		do {
-			u2 = Math.random();
-		} while (u2 === 0.0);
-		var z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-		return z * sigma + mu;
+	function chooseOne(arr) {
+		return arr[Math.floor(Math.random() * arr.length)];
 	}
 
-	function generate_tokens_length(size, k) {
-		var length = Math.ceil(normal_distribution(size / k, size / 10));
-		if (length < 0) {
-			return 0;
-		} else if (length > size) {
-			return size;
+	function preprocessTree(tree) {
+		if (!tree.hasOwnProperty("children") || !tree.children.length) {
+			tree.comboCount = 2;
 		} else {
-			return length;
-		}
-	}
-
-	function choose_from(n, array) {
-		var chosen = [];
-		var arr = array.slice();
-		while (n-- > 0) {
-			var i = Math.floor(Math.random() * arr.length);
-			chosen.push(arr[i]);
-			arr.splice(i, 1);
-		}
-		return chosen;
-	}
-
-	function generate_string() {
-		var keys = Object.keys(TOKENS);
-		var token_length = generate_tokens_length(keys.length, 4);
-		var drawn_keys = choose_from(token_length, keys);
-		var final_pieces = ['Half-Life'];
-		for (var i in drawn_keys) {
-			var key = drawn_keys[i];
-			var subkeys = Object.keys(TOKENS[key]);
-			var sub_type_length = generate_tokens_length(subkeys.length, subkeys.length);
-			var drawn_sub_keys = choose_from(sub_type_length, subkeys);
-			for (var j in drawn_sub_keys) {
-				var subkey = drawn_sub_keys[j];
-				final_pieces.push(choose_from(1, TOKENS[key][subkey])[0]);
+			tree.comboCount = 1;
+			for (var i = 0; i < tree.children.length; ++i) {
+				preprocessTree(tree.children[i]);
+				tree.comboCount *= tree.children[i].comboCount;
 			}
 		}
-		final_pieces.push(choose_from(1, SCRIPTS));
-		final_pieces.push(choose_from(1, EXECUTIONS));
-		final_pieces.push('on');
-		final_pieces.push(choose_from(1, VERSIONS));
-		final_pieces.push(choose_from(1, DIFFICULTIES));
-		return final_pieces.join(' ');
 	}
 
+	function chooseTree(tree) {
+		switch (tree.type) {
+		case "text":
+			return Math.random() < 0.5 ? [tree] : [];
+		case "oneof":
+			var cumcounts = [tree.children[0].comboCount];
+			for (var i = 1; i < tree.children.length; ++i) {
+				cumcounts.push(cumcounts[i - 1] + tree.children[i].comboCount);
+			}
+
+			var value = Math.random() * cumcounts[cumcounts.length - 1];
+			for (var childInd = 0; childInd < cumcounts.length; ++childInd) {
+				if (cumcounts[childInd] >= value) {
+					break;
+				}
+			}
+
+			return chooseTree(tree.children[childInd]);
+		case "combination":
+			var choices = [];
+			for (var i = 0; i < tree.children.length; ++i) {
+				choices = choices.concat(chooseTree(tree.children[i]));
+			}
+			return choices;
+		}
+	}
+
+	function rulesToString(rules) {
+		var tokens = ['Half-Life'];
+		for (var i = 0; i < rules.length; ++i) {
+			tokens.push(rules[i].name);
+		}
+		tokens.push(chooseOne(SCRIPTS));
+		tokens.push(chooseOne(FORMATS));
+		tokens.push('Run');
+		tokens.push('on');
+		tokens.push(chooseOne(DIFFICULTIES));
+		return tokens.join(' ');
+	}
+
+	$(document).ready(function() {
+		$.ajax({
+			method: 'get',
+			url: 'rules.json',
+			dataType: 'json',
+			success: function(tree) {
+				ruleTree = tree;
+				preprocessTree(ruleTree);
+			},
+		})
+		.fail(function() {
+			alert('Failed to load rules.json');
+		});
+	});
+
 	$('#btn-generate').click(function() {
-		var s = generate_string();
-		$('#output-text').text(s);
+		var rules = chooseTree(ruleTree);
+		shuffle(rules);
+		var numTokens = Math.floor(Math.random() * 6 + 1);
+		rules = rules.splice(0, numTokens);
+		console.log(numTokens);
+		$('#output-text').text(rulesToString(rules));
 	});
 </script>
 </body>

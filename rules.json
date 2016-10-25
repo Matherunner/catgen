@@ -1,0 +1,392 @@
+{
+	"type": "combination",
+	"children": [
+		{
+			"type": "combination",
+			"children": [
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "No Ducktap"},
+						{"type": "text", "name": "Always Duck"}
+					]
+				},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "No Jump"},
+						{
+							"type": "combination",
+							"children": [
+								{"type": "text", "name": "No Bunnyhopping"},
+								{"type": "text", "name": "ABH Mod"}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "combination",
+			"children": [
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "100aa"},
+						{"type": "text", "name": "50aa"},
+						{"type": "text", "name": "1aa"},
+						{"type": "text", "name": "0aa"},
+						{"type": "text", "name": "13.37aa"},
+						{"type": "text", "name": "42aa"}
+					]
+				},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "sv_accelerate 1337"},
+						{"type": "text", "name": "sv_accelerate 500"}
+					]
+				},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "sv_maxspeed 300"},
+						{"type": "text", "name": "sv_maxspeed 270"},
+						{"type": "text", "name": "sv_maxspeed 1000"},
+						{"type": "text", "name": "sv_maxspeed 10000"}
+					]
+				},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "20fps"},
+						{"type": "text", "name": "83.33fps"},
+						{"type": "text", "name": "100fps"},
+						{"type": "text", "name": "72fps"},
+						{"type": "text", "name": "501fps"}
+					]
+				},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "No Gravity"},
+						{"type": "text", "name": "sv_gravity 100"},
+						{"type": "text", "name": "sv_gravity 800"}
+					]
+				},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "No Friction"},
+						{"type": "text", "name": "sv_friction 10"}
+					]
+				},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "Walk Only"}
+					]
+				},
+				{"type": "text", "name": "Impulse 101"}
+			]
+		},
+		{
+			"type": "oneof",
+			"children": [
+				{
+					"type": "combination",
+					"children": [
+						{"type": "text", "name": "No IHD"},
+						{"type": "text", "name": "No Triggerdelay"},
+						{"type": "text", "name": "No Obbo"},
+						{"type": "text", "name": "No Damage"},
+						{"type": "text", "name": "No Damage Boost"},
+						{"type": "text", "name": "No Gauss Boost"},
+						{"type": "text", "name": "No Savewarp"},
+						{"type": "text", "name": "No Wrongwarp"},
+						{"type": "text", "name": "No \"wait\""},
+						{"type": "text", "name": "with RNG Manipulation"},
+						{"type": "text", "name": "No Selfgauss"}
+					]
+				},
+				{"type": "text", "name": "Glitchless"}
+			]
+		},
+		{
+			"type": "combination",
+			"children": [
+				{"type": "text", "name": "No Testchamber Skip"},
+				{"type": "text", "name": "No Powerup Skip"},
+				{"type": "text", "name": "No Blast Pit Skip"},
+				{"type": "text", "name": "No Train Sequence Skip"},
+				{
+					"type": "oneof",
+					"children": [
+						{
+							"type": "combination",
+							"children": [
+								{"type": "text", "name": "No Scientist Skip"},
+								{"type": "text", "name": "No Barney Skip"},
+								{"type": "text", "name": "No Alienslave Skip"}
+							]
+						},
+						{"type": "text", "name": "No NPC Manipulation"}
+					]
+				}
+			]
+		},
+		{
+			"type": "combination",
+			"children": [
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "Crowbar Only"},
+						{"type": "text", "name": "9mm Only"},
+						{"type": "text", "name": "Shotgun Only"},
+						{"type": "text", "name": "Crowbar & Shotgun Only"},
+						{"type": "text", "name": "Crowbar & 9mm Only"}
+					]
+				},
+				{"type": "text", "name": "No Explosives"}
+			]
+		},
+		{
+			"type": "combination",
+			"children": [
+				{"type": "text", "name": "God Mode"},
+				{"type": "text", "name": "50 HP"},
+				{"type": "text", "name": "No Suit"}
+			]
+		},
+		{
+			"type": "combination",
+			"children": [
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "Out-of-Bounds"},
+						{"type": "text", "name": "In Bounds"}
+					]
+				},
+				{"type": "text", "name": "Noclip"}
+			]
+		},
+		{
+			"type": "oneof",
+			"children": [
+				{"type": "text", "name": "While Blind Folded"},
+				{"type": "text", "name": "No Monitor"},
+				{
+					"type": "combination",
+					"children": [
+						{"type": "text", "name": "No HUD"},
+						{"type": "text", "name": "No Crosshair"},
+						{"type": "text", "name": "Thirdperson"},
+						{
+							"type": "oneof",
+							"children": [
+								{"type": "text", "name": "r_norefresh 1"},
+								{"type": "text", "name": "r_fullbright 1"}
+							]
+						},
+						{
+							"type": "oneof",
+							"children": [
+								{"type": "text", "name": "50 fov"},
+								{"type": "text", "name": "10 fov"},
+								{"type": "text", "name": "180 fov"}
+							]
+						},
+						{
+							"type": "combination",
+							"children": [
+								{"type": "text", "name": "with Rotating Screen"},
+								{"type": "text", "name": "with Upside-Down Screen"},
+								{"type": "text", "name": "with Screen Jerking Up and Down"}
+							]
+						},
+						{"type": "text", "name": "with Rapidly Flashing Screen"}
+					]
+				}
+			]
+		},
+		{
+			"type": "oneof",
+			"children": [
+				{"type": "text", "name": "on Raspberry Pi"},
+				{"type": "text", "name": "on Apple Watch"},
+				{"type": "text", "name": "on Jailbroken iPhone"},
+				{"type": "text", "name": "on PS2"},
+				{"type": "text", "name": "on Android Phone"}
+			]
+		},
+		{
+			"type": "oneof",
+			"children": [
+				{"type": "text", "name": "Reverse Run"}
+			]
+		},
+		{
+			"type": "combination",
+			"children": [
+				{
+					"type": "oneof",
+					"children": [
+						{
+							"type": "combination",
+							"children": [
+								{
+									"type": "oneof",
+									"children": [
+										{"type": "text", "name": "No Mouse"},
+										{"type": "text", "name": "with Touchpad Only"},
+										{"type": "text", "name": "with Trackball Only"},
+										{"type": "text", "name": "with Racing Wheel Only"},
+										{
+											"type": "combination",
+											"children": [
+												{
+													"type": "oneof",
+													"children": [
+														{"type": "text", "name": "No Mousewheel"},
+														{
+															"type": "combination",
+															"children": [
+																{
+																	"type": "oneof",
+																	"children": [
+																		{"type": "text", "name": "No Free-Scrolling Wheel"},
+																		{"type": "text", "name": "with Free-Scrolling Wheel"},
+																		{"type": "text", "name": "with Non-Free-Scrolling Wheel"}
+																	]
+																},
+																{"type": "text", "name": "with Mousewheel Direction Randomized Every 30s"}
+															]
+														}
+													]
+												},
+												{
+													"type": "oneof",
+													"children": [
+														{"type": "text", "name": "with One-Button Mouse"},
+														{"type": "text", "name": "with 4-Button Mouse"},
+														{"type": "text", "name": "with 5-Button Mouse"}
+													]
+												},
+												{"type": "text", "name": "with Mouse Buttons Randomized Every 30s"}
+											]
+										}
+									]
+								},
+								{
+									"type": "oneof",
+									"children": [
+										{"type": "text", "name": "No Keyboard"},
+										{"type": "text", "name": "with On-Screen Keyboard"},
+										{
+											"type": "combination",
+											"children": [
+												{"type": "text", "name": "with Keyboard Buttons Randomized Every 30s"},
+												{"type": "text", "name": "Two Person One Keyboard"},
+												{"type": "text", "name": "Ten Person One Keyboard"}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "oneof",
+							"children": [
+								{"type": "text", "name": "with TV Remote"},
+								{"type": "text", "name": "Two Person One Remote"}
+							]
+						},
+						{
+							"type": "oneof",
+							"children": [
+								{"type": "text", "name": "Two Person One Controller"},
+								{"type": "text", "name": "with Gamepad"}
+							]
+						},
+						{"type": "text", "name": "with Voice Control Only"},
+						{"type": "text", "name": "Played by Twitch Chat"},
+						{"type": "text", "name": "Played by Reddit Comments"},
+						{"type": "text", "name": "Played by Emails"},
+						{"type": "text", "name": "Played by Voice Commands over Discord"}
+					]
+				},
+				{"type": "text", "name": "Console Only"},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "by VNC to Remote Desktop with 300ms Ping"}
+					]
+				},
+				{"type": "text", "name": "In VR"},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "No Sound"}
+					]
+				},
+				{"type": "text", "name": "with 1 Minute Input Lag"}
+			]
+		},
+		{
+			"type": "combination",
+			"children": [
+				{"type": "text", "name": "on Chinese Water Torture"},
+				{
+					"type": "oneof",
+					"children": [
+						{"type": "text", "name": "with One Hand"},
+						{"type": "text", "name": "with One Leg"},
+						{"type": "text", "name": "with Legs Only"},
+						{"type": "text", "name": "with Nose Only"},
+						{"type": "text", "name": "with Pinky Only"}
+					]
+				},
+				{"type": "text", "name": "with Continuous Sensual Simulation without Climaxing"},
+				{"type": "text", "name": "While Playing Upside-Down"},
+				{"type": "text", "name": "While Drunk"},
+				{"type": "text", "name": "While On Heroine"}
+			]
+		},
+		{
+			"type": "oneof",
+			"children": [
+				{"type": "text", "name": "in North Korea"},
+				{"type": "text", "name": "While Skydiving"},
+				{"type": "text", "name": "While Diving in Mariana Trench"},
+				{"type": "text", "name": "While Buried Under the Sand in Sahara Desert"},
+				{"type": "text", "name": "While in the Death Zone on Mount Everest"},
+				{"type": "text", "name": "in ISIS Torture Camp"},
+				{"type": "text", "name": "in Space"},
+				{"type": "text", "name": "on Mars"},
+				{"type": "text", "name": "on the Moon"},
+				{"type": "text", "name": "in Prison"},
+				{"type": "text", "name": "While on a Rollercoaster"},
+				{"type": "text", "name": "While Driving on Autobahn and Talking on the Phone"},
+				{"type": "text", "name": "While Sitting in a Car Driven by a Drunk"}
+			]
+		},
+		{
+			"type": "oneof",
+			"children": [
+				{"type": "text", "name": "Pacifist"},
+				{"type": "text", "name": "100%"},
+				{"type": "text", "name": "Low%"}
+			]
+		},
+		{
+			"type": "oneof",
+			"children": [
+				{"type": "text", "name": "3 Consecutive Playthroughs"},
+				{"type": "text", "name": "5 Consecutive Playthroughs"},
+				{"type": "text", "name": "100 Consecutive Playthroughs"}
+			]
+		}
+	]
+}
