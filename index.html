@@ -23,6 +23,11 @@
 			font-family: "PT Sans", sans-serif;
 		}
 
+		a {
+			color: inherit;
+			text-decoration: underline;
+		}
+
 		.symbol {
 			font-size: 100pt;
 		}
@@ -148,7 +153,12 @@
 	function rulesToString(rules) {
 		var tokens = ['Half-Life'];
 		for (var i = 0; i < rules.length; ++i) {
-			tokens.push(rules[i].name);
+			// Needless to say, not the best approach at all. But it'll work for our purposes.
+			if (rules[i].hasOwnProperty('url')) {
+				tokens.push('<a href="' + rules[i].url + '">' + rules[i].name + '</a>');
+			} else {
+				tokens.push(rules[i].name)
+			}
 		}
 		tokens.push(chooseOne(SCRIPTS));
 		tokens.push(chooseOne(FORMATS));
@@ -178,7 +188,7 @@
 		shuffle(rules);
 		var numTokens = Math.floor(Math.random() * 6 + 1);
 		rules = rules.splice(0, numTokens);
-		$('#output-text').text(rulesToString(rules));
+		$('#output-text').html(rulesToString(rules));
 	});
 </script>
 </body>
